@@ -14,3 +14,12 @@ describe('board initialization', function () {
         expect(document.getElementById(`${HEIGHT-1}-${WIDTH-1}`).innerText).toBe('');
     })
 })
+
+describe('gameplay functions', function() {
+    it('places a piece in the correct position in the table', function() {
+        placeInTable(3, 2);
+        expect(document.getElementById('3-2').firstChild.classList[0]).toEqual('piece');
+        expect(document.getElementById('3-2').firstChild.classList[1]).toEqual(`player-1`);
+        document.getElementById('3-2').innerHTML = '';
+    })
+})

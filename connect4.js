@@ -48,7 +48,7 @@ function makeHtmlBoard() {
   // TODO: add comment for this code
   // this code builds the rows and columns of the html table that comprises the board
   // and gives each <td> element an id of the form 'row-col'
-  // clickable column header cells have columns ids 0 thr (WIDTH-1)
+  // clickable column header cells have column ids 0 thr (WIDTH-1)
   for (let y = 0; y < HEIGHT; y++) {
     const row = document.createElement("tr");
     for (let x = 0; x < WIDTH; x++) {
@@ -67,13 +67,18 @@ function makeHtmlBoard() {
 //   return 0;
 // }
 
-// /** placeInTable: update DOM to place piece into HTML table of board */
+/** placeInTable: update DOM to place piece into HTML table of board */
 
-// function placeInTable(y, x) {
-//   // TODO: make a div and insert into correct table cell
-// }
+function placeInTable(y, x) {
+  // TODO: make a div and insert into correct table cell
+  const cell = document.getElementById(`${y}-${x}`);
+  const newPiece = document.createElement('div');
+  const player = `player-${currPlayer}`;
+  newPiece.classList.add('piece', player);
+  cell.appendChild(newPiece);
+}
 
-// /** endGame: announce game end */
+/** endGame: announce game end */
 
 // function endGame(msg) {
 //   // TODO: pop up alert message

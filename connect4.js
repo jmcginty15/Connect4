@@ -62,16 +62,27 @@ function makeHtmlBoard() {
 
 /** findSpotForCol: given column x, return top empty y (null if filled) */
 
-// function findSpotForCol(x) {
-//   // TODO: write the real version of this, rather than always returning 0
-//   return 0;
-// }
+function findSpotForCol(x) {
+  // TODO: write the real version of this, rather than always returning 0
+  let y = HEIGHT - 1;
+  let currCell = document.getElementById(`${y}-${x}`);
+  while (y >= 0 && currCell.innerHTML !== '') {
+    y--;
+    currCell = document.getElementById(`${y}-${x}`);
+  }
+  if (y === -1) {
+    return null;
+  } else {
+    return y;
+  }
+}
 
 /** placeInTable: update DOM to place piece into HTML table of board */
 
 function placeInTable(y, x) {
   // TODO: make a div and insert into correct table cell
   const cell = document.getElementById(`${y}-${x}`);
+  console.log(cell);
   const newPiece = document.createElement('div');
   const player = `player-${currPlayer}`;
   newPiece.classList.add('piece', player);

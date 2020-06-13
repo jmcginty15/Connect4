@@ -22,4 +22,14 @@ describe('gameplay functions', function() {
         expect(document.getElementById('3-2').firstChild.classList[1]).toEqual(`player-1`);
         document.getElementById('3-2').innerHTML = '';
     })
+
+    it('finds the first empty cell in a column', function () {
+        placeInTable(HEIGHT - 1, 0);
+        placeInTable(HEIGHT - 2, 0);
+        placeInTable(HEIGHT - 3, 0);
+        expect(findSpotForCol(0)).toBe(HEIGHT - 4);
+        document.getElementById(`${HEIGHT - 1}-0`).innerHTML = '';
+        document.getElementById(`${HEIGHT - 2}-0`).innerHTML = '';
+        document.getElementById(`${HEIGHT - 3}-0`).innerHTML = '';
+    })
 })

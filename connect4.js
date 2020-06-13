@@ -110,14 +110,12 @@ function handleClick(evt) {
   // place piece in board and add to HTML table
   // TODO: add line to update in-memory board
   placeInTable(y, x);
-  console.log(y);
-  console.log(board[y][x]);
   board[y][x] = currPlayer;
 
   // check for win
-  // if (checkForWin()) {
-  //   return endGame(false);
-  // }
+  if (checkForWin()) {
+    return endGame(false);
+  }
 
   // check for tie
   // TODO: check if all cells in board are filled; if so call, call endGame
@@ -130,40 +128,40 @@ function handleClick(evt) {
   currPlayer === 1 ? currPlayer = 2 : currPlayer = 1;
 }
 
-// /** checkForWin: check board cell-by-cell for "does a win start here?" */
-// // a winning series of 4 will always include the last piece that was played, so I don't need to check every cell
-// // I only need to check rows, columns, and diagonals that include the last played piece
-// function checkForWin() {
-//   function _win(cells) {
-//     // Check four cells to see if they're all color of current player
-//     //  - cells: list of four (y, x) cells
-//     //  - returns true if all are legal coordinates & all match currPlayer
+/** checkForWin: check board cell-by-cell for "does a win start here?" */
+// a winning series of 4 will always include the last piece that was played, so I don't need to check every cell
+// I only need to check rows, columns, and diagonals that include the last played piece
+function checkForWin() {
+  function _win(cells) {
+    // Check four cells to see if they're all color of current player
+    //  - cells: list of four (y, x) cells
+    //  - returns true if all are legal coordinates & all match currPlayer
 
-//     return cells.every(
-//       ([y, x]) =>
-//         y >= 0 &&
-//         y < HEIGHT &&
-//         x >= 0 &&
-//         x < WIDTH &&
-//         board[y][x] === currPlayer
-//     );
-//   }
+    return cells.every(
+      ([y, x]) =>
+        y >= 0 &&
+        y < HEIGHT &&
+        x >= 0 &&
+        x < WIDTH &&
+        board[y][x] === currPlayer
+    );
+  }
 
-//   // TODO: read and understand this code. Add comments to help you.
+  // TODO: read and understand this code. Add comments to help you.
 
-//   for (let y = 0; y < HEIGHT; y++) {
-//     for (let x = 0; x < WIDTH; x++) {
-//       const horiz = [[y, x], [y, x + 1], [y, x + 2], [y, x + 3]];
-//       const vert = [[y, x], [y + 1, x], [y + 2, x], [y + 3, x]];
-//       const diagDR = [[y, x], [y + 1, x + 1], [y + 2, x + 2], [y + 3, x + 3]];
-//       const diagDL = [[y, x], [y + 1, x - 1], [y + 2, x - 2], [y + 3, x - 3]];
+  for (let y = 0; y < HEIGHT; y++) {
+    for (let x = 0; x < WIDTH; x++) {
+      const horiz = [[y, x], [y, x + 1], [y, x + 2], [y, x + 3]];
+      const vert = [[y, x], [y + 1, x], [y + 2, x], [y + 3, x]];
+      const diagDR = [[y, x], [y + 1, x + 1], [y + 2, x + 2], [y + 3, x + 3]];
+      const diagDL = [[y, x], [y + 1, x - 1], [y + 2, x - 2], [y + 3, x - 3]];
 
-//       if (_win(horiz) || _win(vert) || _win(diagDR) || _win(diagDL)) {
-//         return true;
-//       }
-//     }
-//   }
-// }
+      if (_win(horiz) || _win(vert) || _win(diagDR) || _win(diagDL)) {
+        return true;
+      }
+    }
+  }
+}
 
 // check top row only since all other rows will be filled before the top row
 function checkForTie() {

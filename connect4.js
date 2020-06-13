@@ -82,7 +82,6 @@ function findSpotForCol(x) {
 function placeInTable(y, x) {
   // TODO: make a div and insert into correct table cell
   const cell = document.getElementById(`${y}-${x}`);
-  console.log(cell);
   const newPiece = document.createElement('div');
   const player = `player-${currPlayer}`;
   newPiece.classList.add('piece', player);
@@ -91,37 +90,43 @@ function placeInTable(y, x) {
 
 /** endGame: announce game end */
 
-// function endGame(msg) {
-//   // TODO: pop up alert message
-// }
+function endGame(tie) {
+  // TODO: pop up alert message
+  tie ? window.alert("It's a tie!") : window.alert(`Player ${currPlayer} wins!`);
+}
 
 // /** handleClick: handle click of column top to play piece */
 
-// function handleClick(evt) {
-//   // get x from ID of clicked cell
-//   let x = +evt.target.id;
+function handleClick(evt) {
+  // get x from ID of clicked cell
+  let x = +evt.target.id;
 
-//   // get next spot in column (if none, ignore click)
-//   let y = findSpotForCol(x);
-//   if (y === null) {
-//     return;
-//   }
+  // get next spot in column (if none, ignore click)
+  let y = findSpotForCol(x);
+  if (y === null) {
+    return;
+  }
 
-//   // place piece in board and add to HTML table
-//   // TODO: add line to update in-memory board
-//   placeInTable(y, x);
+  // place piece in board and add to HTML table
+  // TODO: add line to update in-memory board
+  placeInTable(y, x);
+  board[y][x] = currPlayer;
 
-//   // check for win
-//   if (checkForWin()) {
-//     return endGame(`Player ${currPlayer} won!`);
-//   }
+  // check for win
+  if (checkForWin()) {
+    return endGame(false);
+  }
 
-//   // check for tie
-//   // TODO: check if all cells in board are filled; if so call, call endGame
+  // check for tie
+  // TODO: check if all cells in board are filled; if so call, call endGame
+  if (checkForTie()) {
+    endGame(true);
+  }
 
-//   // switch players
-//   // TODO: switch currPlayer 1 <-> 2
-// }
+  // switch players
+  // TODO: switch currPlayer 1 <-> 2
+  currPlayer === 1 ? currPlayer = 2 : currPlayer = 1;
+}
 
 // /** checkForWin: check board cell-by-cell for "does a win start here?" */
 // // a winning series of 4 will always include the last piece that was played, so I don't need to check every cell
@@ -158,5 +163,13 @@ function placeInTable(y, x) {
 //   }
 // }
 
-// makeBoard();
-// makeHtmlBoard();
+function checkForTie() {
+  return board.every(function(row) {
+    return row.every(function(cell) {
+      return cell !== null;
+    })
+  })
+}
+
+makeBoard();
+makeHtmlBoard();

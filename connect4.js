@@ -9,7 +9,10 @@ const WIDTH = 7;
 const HEIGHT = 6;
 
 let currPlayer = 1; // active player: 1 or 2
-const board = []; // array of rows, each row is array of cells  (board[y][x])
+let board = []; // array of rows, each row is array of cells  (board[y][x])
+
+const newGameButton = document.querySelector('#new-game');
+newGameButton.addEventListener('click', newGame);
 
 /** makeBoard: create in-JS board structure:
  *    board = array of rows, each row is array of cells  (board[y][x])
@@ -113,7 +116,7 @@ function handleClick(evt) {
   board[y][x] = currPlayer;
 
   // check for win
-  if (checkForWin()) {
+  if (checkForWin(y, x)) {
     return endGame(false);
   }
 
@@ -131,7 +134,7 @@ function handleClick(evt) {
 /** checkForWin: check board cell-by-cell for "does a win start here?" */
 // a winning series of 4 will always include the last piece that was played, so I don't need to check every cell
 // I only need to check rows, columns, and diagonals that include the last played piece
-function checkForWin() {
+function checkForWin(y, x) {
   function _win(cells) {
     // Check four cells to see if they're all color of current player
     //  - cells: list of four (y, x) cells
@@ -147,27 +150,54 @@ function checkForWin() {
     );
   }
 
-  // TODO: read and understand this code. Add comments to help you.
+  // // TODO: read and understand this code. Add comments to help you.
 
-  for (let y = 0; y < HEIGHT; y++) {
-    for (let x = 0; x < WIDTH; x++) {
-      const horiz = [[y, x], [y, x + 1], [y, x + 2], [y, x + 3]];
-      const vert = [[y, x], [y + 1, x], [y + 2, x], [y + 3, x]];
-      const diagDR = [[y, x], [y + 1, x + 1], [y + 2, x + 2], [y + 3, x + 3]];
-      const diagDL = [[y, x], [y + 1, x - 1], [y + 2, x - 2], [y + 3, x - 3]];
+  // // iterating over every cell in the board array
+  // for (let y = 0; y < HEIGHT; y++) {
+  //   for (let x = 0; x < WIDTH; x++) {
+  //     // generating sequences of 4 cells horizontally, vertically, and diagonally down right and left from the current cell
+  //     const horiz = [[y, x], [y, x + 1], [y, x + 2], [y, x + 3]];
+  //     const vert = [[y, x], [y + 1, x], [y + 2, x], [y + 3, x]];
+  //     const diagDR = [[y, x], [y + 1, x + 1], [y + 2, x + 2], [y + 3, x + 3]];
+  //     const diagDL = [[y, x], [y + 1, x - 1], [y + 2, x - 2], [y + 3, x - 3]];
 
-      if (_win(horiz) || _win(vert) || _win(diagDR) || _win(diagDL)) {
-        return true;
-      }
+  //     // checking if any of the 4 generated sequences are all the same color
+  //     if (_win(horiz) || _win(vert) || _win(diagDR) || _win(diagDL)) {
+  //       return true;
+  //     }
+  //   }
+  // }
+
+  // my better way of generating the sequences of 4 cells
+  // I have changed the checkForWin function to accept 2 arguments
+  // which are the coordinates of the last played piece
+  for (let i = 0; i < 4; i++) {
+    // this version of the loop only checks sequences that pass through the last played piece
+    const horiz = [[y, x - i], [y, x - i + 1], [y, x - i + 2], [y, x - i + 3]];
+    const vert = [[y - i, x], [y - i + 1, x], [y - i + 2, x], [y - i + 3, x]];
+    const diagDR = [[y - i, x - i], [y - i + 1, x - i + 1,], [y - i + 2, x - i + 2], [y - i + 3, x - i + 3]];
+    const diagDL = [[y - i, x + i], [y - i + 1, x + i - 1], [y - i + 2, x + i - 2], [y - i + 3, x + i - 3]];
+
+    if (_win(horiz) || _win(vert) || _win(diagDR) || _win(diagDL)) {
+      return true;
     }
   }
 }
 
 // check top row only since all other rows will be filled before the top row
 function checkForTie() {
-  return board[0].every(function(cell) {
+  return board[0].every(function (cell) {
     return cell !== null;
   })
+}
+
+// on click of New Game button, clear and re-initialize board in memory and DOM
+function newGame() {
+  currPlayer = 1;
+  board = [];
+  document.querySelector('#board').innerHTML = '';
+  makeBoard();
+  makeHtmlBoard();
 }
 
 makeBoard();

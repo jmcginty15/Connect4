@@ -28,32 +28,37 @@ function makeBoard() {
 
 /** makeHtmlBoard: make HTML table and row of column tops. */
 
-// function makeHtmlBoard() {
-//   // TODO: get "htmlBoard" variable from the item in HTML w/ID of "board"
+function makeHtmlBoard() {
+  // TODO: get "htmlBoard" variable from the item in HTML w/ID of "board"
+  const htmlBoard = document.querySelector('#board');
 
-//   // TODO: add comment for this code
-//   const top = document.createElement("tr");
-//   top.setAttribute("id", "column-top");
-//   top.addEventListener("click", handleClick);
+  // TODO: add comment for this code
+  // this code creates a top row of the board and adds an event listener to it to listen for clicks
+  const top = document.createElement("tr");
+  top.setAttribute("id", "column-top");
+  // top.addEventListener("click", handleClick);
 
-//   for (let x = 0; x < WIDTH; x++) {
-//     const headCell = document.createElement("td");
-//     headCell.setAttribute("id", x);
-//     top.append(headCell);
-//   }
-//   htmlBoard.append(top);
+  for (let x = 0; x < WIDTH; x++) {
+    const headCell = document.createElement("td");
+    headCell.setAttribute("id", x);
+    top.append(headCell);
+  }
+  htmlBoard.append(top);
 
-//   // TODO: add comment for this code
-//   for (let y = 0; y < HEIGHT; y++) {
-//     const row = document.createElement("tr");
-//     for (let x = 0; x < WIDTH; x++) {
-//       const cell = document.createElement("td");
-//       cell.setAttribute("id", `${y}-${x}`);
-//       row.append(cell);
-//     }
-//     htmlBoard.append(row);
-//   }
-// }
+  // TODO: add comment for this code
+  // this code builds the rows and columns of the html table that comprises the board
+  // and gives each <td> element an id of the form 'row-col'
+  // clickable column header cells have columns ids 0 thr (WIDTH-1)
+  for (let y = 0; y < HEIGHT; y++) {
+    const row = document.createElement("tr");
+    for (let x = 0; x < WIDTH; x++) {
+      const cell = document.createElement("td");
+      cell.setAttribute("id", `${y}-${x}`);
+      row.append(cell);
+    }
+    htmlBoard.append(row);
+  }
+}
 
 /** findSpotForCol: given column x, return top empty y (null if filled) */
 
@@ -103,7 +108,8 @@ function makeBoard() {
 // }
 
 // /** checkForWin: check board cell-by-cell for "does a win start here?" */
-
+// // a winning series of 4 will always include the last piece that was played, so I don't need to check every cell
+// // I only need to check rows, columns, and diagonals that include the last played piece
 // function checkForWin() {
 //   function _win(cells) {
 //     // Check four cells to see if they're all color of current player

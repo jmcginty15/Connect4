@@ -17,12 +17,12 @@ const board = []; // array of rows, each row is array of cells  (board[y][x])
 
 function makeBoard() {
   // TODO: set "board" to empty HEIGHT x WIDTH matrix array
-  const row = [];
-  for (let i = 0; i < WIDTH; i++) {
-    row.push(null);
-  }
   for (let i = 0; i < HEIGHT; i++) {
-    board.push(row);
+    let nextRow = [];
+    for (let j = 0; j < WIDTH; j++) {
+      nextRow.push(null);
+    }
+    board.push(nextRow);
   }
 }
 
@@ -36,7 +36,7 @@ function makeHtmlBoard() {
   // this code creates a top row of the board and adds an event listener to it to listen for clicks
   const top = document.createElement("tr");
   top.setAttribute("id", "column-top");
-  // top.addEventListener("click", handleClick);
+  top.addEventListener("click", handleClick);
 
   for (let x = 0; x < WIDTH; x++) {
     const headCell = document.createElement("td");
@@ -110,12 +110,14 @@ function handleClick(evt) {
   // place piece in board and add to HTML table
   // TODO: add line to update in-memory board
   placeInTable(y, x);
+  console.log(y);
+  console.log(board[y][x]);
   board[y][x] = currPlayer;
 
   // check for win
-  if (checkForWin()) {
-    return endGame(false);
-  }
+  // if (checkForWin()) {
+  //   return endGame(false);
+  // }
 
   // check for tie
   // TODO: check if all cells in board are filled; if so call, call endGame
@@ -163,11 +165,10 @@ function handleClick(evt) {
 //   }
 // }
 
+// check top row only since all other rows will be filled before the top row
 function checkForTie() {
-  return board.every(function(row) {
-    return row.every(function(cell) {
-      return cell !== null;
-    })
+  return board[0].every(function(cell) {
+    return cell !== null;
   })
 }
 
